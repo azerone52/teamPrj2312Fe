@@ -29,7 +29,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../axiosInstance";
+import axios from "axios";
 
 function CommentContent({
   comment,
@@ -64,7 +64,7 @@ function CommentContent({
 
   function handleSubmit() {
     setIsSubmitting(true);
-    axiosInstance
+    axios
       .put(
         "/api/comment/update/" + comment.id,
         {
@@ -87,7 +87,7 @@ function CommentContent({
       .catch(() => {
         const re = sendRefreshToken();
         re.then(() =>
-          axiosInstance
+          axios
             .put(
               "/api/comment/update/" + comment.id,
               {
@@ -280,7 +280,7 @@ function CommentComponent({ boardId, loggedIn, userLogId, isAdmin }) {
       params.set("page", currentPage);
       params.set("size", commentPerPage);
 
-      axiosInstance.get("/api/comment/list?" + params).then((response) => {
+      axios.get("/api/comment/list?" + params).then((response) => {
         setCommentList(response.data.content);
         setTotalPage(response.data.totalPages);
       });
@@ -312,7 +312,7 @@ function CommentComponent({ boardId, loggedIn, userLogId, isAdmin }) {
     const refreshToken = localStorage.getItem("refreshToken");
     console.log("리프레시 토큰: ", refreshToken);
     if (refreshToken !== null) {
-      return axiosInstance
+      return axios
         .get("/refreshToken", {
           headers: { Authorization: `Bearer ${refreshToken}` },
         })
@@ -339,7 +339,7 @@ function CommentComponent({ boardId, loggedIn, userLogId, isAdmin }) {
   function handleSubmit({ content }) {
     setIsSubmitting(true);
     console.log(content);
-    axiosInstance
+    axios
       .post(
         `/api/comment/add/${boardId}`,
         { content },
@@ -358,7 +358,7 @@ function CommentComponent({ boardId, loggedIn, userLogId, isAdmin }) {
         const re = sendRefreshToken();
         if (re !== undefined) {
           re.then(() => {
-            axiosInstance
+            axios
               .post(
                 `/api/comment/add/${boardId}`,
                 { content },
@@ -400,7 +400,7 @@ function CommentComponent({ boardId, loggedIn, userLogId, isAdmin }) {
 
   function handleDelete() {
     setIsSubmitting(true);
-    axiosInstance
+    axios
       .delete("/api/comment/delete/" + commentIdRef.current, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
@@ -414,7 +414,7 @@ function CommentComponent({ boardId, loggedIn, userLogId, isAdmin }) {
         const re = sendRefreshToken();
         if (re !== undefined) {
           re.then(() =>
-            axiosInstance
+            axios
               .delete("/api/comment/delete/" + commentIdRef.current, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem(

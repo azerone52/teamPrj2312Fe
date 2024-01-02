@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import axiosInstance from "../../axiosInstance";
+import axios from "axios";
 
 export function MemeberSocialLogin() {
   let { type } = useParams();
@@ -10,7 +10,7 @@ export function MemeberSocialLogin() {
   const toast = useToast();
 
   useEffect(() => {
-    axiosInstance
+    axios
       .get(`/api/auth/${type}/callback?` + searchParams)
       .then((response) => {
         localStorage.setItem("accessToken", response.data.accessToken);

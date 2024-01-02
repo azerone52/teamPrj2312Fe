@@ -14,9 +14,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { nanoid } from "nanoid";
 import { CartDisplay } from "./CartDisplay";
-import axiosInstance from "../../axiosInstance";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export function OrderWrite() {
   const [name, setName] = useState("");
@@ -34,7 +34,7 @@ export function OrderWrite() {
   const [items, setItems] = useState([]);
 
   const fetchList = () => {
-    axiosInstance
+    axios
       .get("/cart/fetch", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
@@ -74,7 +74,7 @@ export function OrderWrite() {
   // ===========================================
 
   function getMember() {
-    axiosInstance
+    axios
       .get("/api/order", {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
@@ -103,7 +103,7 @@ export function OrderWrite() {
     const refreshToken = localStorage.getItem("refreshToken");
     console.log("리프레시 토큰: ", refreshToken);
 
-    axiosInstance
+    axios
       .get("/refreshToken", {
         headers: { Authorization: `Bearer ${refreshToken}` },
       })
@@ -153,7 +153,7 @@ export function OrderWrite() {
       delete requestData.orderId;
       delete requestData.orderName;
       // 서버에 POST 요청 보내기
-      const response = await axiosInstance.post("/payment/toss", serverData, {
+      const response = await axios.post("/payment/toss", serverData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },

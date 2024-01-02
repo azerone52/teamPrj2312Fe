@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../axiosInstance";
+import axios from "axios";
 
 export function MemberSignup() {
   const [logId, setLogId] = useState("");
@@ -37,7 +37,7 @@ export function MemberSignup() {
   let idChecked = sameOriginId || idAvailable;
 
   function handleSubmit() {
-    axiosInstance
+    axios
       .post("/member/add", {
         logId,
         password,
@@ -77,7 +77,7 @@ export function MemberSignup() {
   function handleEmailCheck() {
     const params = new URLSearchParams();
     params.set("email", email);
-    axiosInstance
+    axios
       .get("/member/check", {
         params: params,
       })
@@ -102,7 +102,7 @@ export function MemberSignup() {
   function handleIdCheck() {
     const params = new URLSearchParams();
     params.set("logId", logId);
-    axiosInstance
+    axios
       .get("/member/check", {
         params: params,
       })

@@ -1,5 +1,4 @@
 import axios from "axios";
-import axiosInstance from "../../axiosInstance";
 
 export const startSocialLoginTimer = async (
   accessTokenExpiry,
@@ -25,7 +24,7 @@ export const startSocialLoginTimer = async (
   const RefreshSocialAccessToken = async () => {
     try {
       console.log("백엔드에 갱신 요청");
-      const response = await axiosInstance.get("/api/auth/refreshToken", {
+      const response = await axios.get("/api/auth/refreshToken", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
         },

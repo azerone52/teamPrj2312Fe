@@ -17,7 +17,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useImmer } from "use-immer";
 import axios from "axios";
-import axiosInstance from "../../axiosInstance";
 
 export function BoardEdit() {
   const [board, updateBoard] = useImmer(null); //객체 사용해서 가변적으로 상태 변경
@@ -37,7 +36,7 @@ export function BoardEdit() {
   //
 
   useEffect(() => {
-    axiosInstance
+    axios
       .get("/api/board/id/" + id)
       .then((response) => updateBoard(response.data));
   }, []);
@@ -122,7 +121,7 @@ export function BoardEdit() {
 
     axios
       .putForm(
-        "https://api.muemalaf.click/api/board/edit/" + id,
+        "/api/board/edit/" + id,
         {
           title: board.title,
           artist: board.artist,
@@ -131,7 +130,7 @@ export function BoardEdit() {
           fileURL: board.fileURL,
           releaseDate: board.releaseDate,
           stockQuantity: board.stockQuantity,
-          // removeFileIds, //이미지도 전송
+          removeFileIds, //삭제할 이미지도 전송
           uploadFiles: boardFiles,
         },
         {
@@ -140,12 +139,13 @@ export function BoardEdit() {
           },
         },
       )
-      .then((response) =>
+      .then((response) => {
         toast({
           description: id + "번 앨범이 수정되었습니다.",
           status: "success",
-        }),
-      )
+        });
+        console.log(removeFileIds);
+      })
       .catch((error) =>
         toast({
           description: "수정 중 문제가 발생하였습니다.",
